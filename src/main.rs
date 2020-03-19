@@ -1,11 +1,17 @@
-use std::collections::HashMap;
+use serde::Deserialize;
+
+#[derive(Debug, Deserialize)]
+struct IP {
+    origin: String,
+}
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let resp = reqwest::get("https://httpbin.org/ip")
         .await?
-        .json::<HashMap<String, String>>()
+        .json::<IP>()
         .await?;
     println!("{:#?}", resp);
+    println!("{:#?}", resp.origin);
     Ok(())
 }
